@@ -312,7 +312,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>AzureKeyVault is an R package for working with the Key Vault service. It provides both a client interface, to access the contents of the vault, and a Resource Manager interface for administering the Key Vault itself.</p>
 <div id="resource-manager-interface" class="section level2">
 <h2>Resource Manager interface</h2>
-<p>AzureKeyVault extends the <a href="https://github.com/cloudyr/AzureRMR">AzureRMR</a> package to handle key vaults. In addition to creating and deleting vaults, it provides methods to manage access policies for user and service principals.</p>
+<p>AzureKeyVault extends the <a href="https://github.com/Azure/AzureRMR">AzureRMR</a> package to handle key vaults. In addition to creating and deleting vaults, it provides methods to manage access policies for user and service principals.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># create a key vault</span></a>
 <a class="sourceLine" id="cb1-2" title="2">rg &lt;-<span class="st"> </span>AzureRMR<span class="op">::</span><span class="kw">get_azure_login</span>()<span class="op">$</span></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="st">    </span><span class="kw">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="op">$</span></a>
