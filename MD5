@@ -1,7 +1,7 @@
-c5ceb1f47fd18e51f3239302e51f60ef *DESCRIPTION
+ab78e6f34b6aaf1c268c22a5b2122bfe *DESCRIPTION
 4dd4040e3beaa3462c568ce9d0620d9d *LICENSE
 3d64f7f836396489a30d0076047cd6cc *NAMESPACE
-b816bf16d8b3c3e6b334e5853ee0741e *NEWS.md
+8057d87bb92ef4dbfb597da7d36af735 *NEWS.md
 4756f90642b26784e1279a48c6ff4c2b *R/AzureKeyVault.R
 6e227a758fc515e6ad8b6fa417973171 *R/add_methods.R
 3c61ef8b191daba62c8ce70a6a7b10ac *R/az_vault.R
@@ -15,10 +15,10 @@ b816bf16d8b3c3e6b334e5853ee0741e *NEWS.md
 5e24ce8de8bc81ea2f2f8b8b29f705e3 *R/stored_key.R
 e967ff99da5537d866153cfbb41b43d6 *R/stored_object.R
 ea6e5e7776ceba7a2689d815335ce1c8 *R/stored_secret.R
-832570568768fd65d8c91070b372d58b *R/utils.R
+47bad5d44fcd8662e20da693559c5868 *R/utils.R
 11e10d5452845c9ccca484cee8f719e9 *R/vault_endpoint.R
-5311668f2a25819faf0711ae6ed83aa6 *README.md
-d19a41dcb7c8706a8cd6a53dc46fa6ca *build/vignette.rds
+d6f6affd0e90644727b51bbbfe5b79fc *README.md
+f1d7b7dec4a9c217ab934829cf8b2bcf *build/vignette.rds
 0fbfe791cac21746061067998f6a7fbe *inst/doc/intro.Rmd
 e4c94acbcdf6fda078cf827de12cdf47 *inst/doc/intro.html
 919e54aa394e2fae37b8b318512bbf63 *man/AzureKeyVault.Rd
@@ -27,6 +27,7 @@ e4c94acbcdf6fda078cf827de12cdf47 *inst/doc/intro.html
 73172ea252243d4da40c0adae6ec1a46 *man/certificates.Rd
 fb3c40f121a01d5ea0c0d4010567d2c5 *man/create_key_vault.Rd
 52703a18d2d39e12cf83f89b2f96c940 *man/delete_key_vault.Rd
+33f894e0a320b862701729aa9c2f1cfb *man/figures/logo.png
 80e24bb689780746c4e8fdc487f07ad6 *man/get_key_vault.Rd
 bb79899813007d09a66c3ce5f665053c *man/helpers.Rd
 43a502eabfb0851c88125081fbac47dc *man/key.Rd
@@ -37,10 +38,10 @@ bb79899813007d09a66c3ce5f665053c *man/helpers.Rd
 6b76323ca9b9f60e6acf269999296ad2 *man/storage_accounts.Rd
 8023d432bcc275cf06acac23a9ecc6f1 *man/vault_access_policy.Rd
 18c1224a4a04a4a6ff7ba30bddf6d11d *tests/testthat.R
-35044eb43fd822ed125ef4ad01b6018d *tests/testthat/test01_resource.R
+81af51f644d928671120f07c86063603 *tests/testthat/test01_resource.R
 15bc7572c3def5d791d0853c003f054f *tests/testthat/test02_keys.R
 c4584f28e0d5c7a114bc040ecd75eca8 *tests/testthat/test03_secrets.R
 3abaed187f2c54ad14b7c544d792e45e *tests/testthat/test04_certs.R
-54d11602ed1998bb62f8c48e92c76734 *tests/testthat/test05_storage.R
+440daa1d2c9120fe2a618c0564ce8f71 *tests/testthat/test05_storage.R
 17c8f9bea948ea5c445f008e5a70ae18 *tests/testthat/test06_chartok.R
 0fbfe791cac21746061067998f6a7fbe *vignettes/intro.Rmd
