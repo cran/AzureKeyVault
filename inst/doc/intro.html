@@ -19,9 +19,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -31,14 +31,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -47,9 +49,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -313,33 +315,33 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="resource-manager-interface" class="section level2">
 <h2>Resource Manager interface</h2>
 <p>AzureKeyVault extends the <a href="https://github.com/Azure/AzureRMR">AzureRMR</a> package to handle key vaults. In addition to creating and deleting vaults, it provides methods to manage access policies for user and service principals.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># create a key vault</span></a>
-<a class="sourceLine" id="cb1-2" title="2">rg &lt;-<span class="st"> </span>AzureRMR<span class="op">::</span><span class="kw">get_azure_login</span>()<span class="op">$</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="st">    </span><span class="kw">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="op">$</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="st">    </span><span class="kw">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)</a>
-<a class="sourceLine" id="cb1-5" title="5">kv &lt;-<span class="st"> </span>rg<span class="op">$</span><span class="kw">create_key_vault</span>(<span class="st">&quot;mykeyvault&quot;</span>)</a>
-<a class="sourceLine" id="cb1-6" title="6"></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="co"># list current principals (by default includes logged-in user)</span></a>
-<a class="sourceLine" id="cb1-8" title="8">kv<span class="op">$</span><span class="kw">list_principals</span>()</a>
-<a class="sourceLine" id="cb1-9" title="9"></a>
-<a class="sourceLine" id="cb1-10" title="10"><span class="co"># get details for a service principal</span></a>
-<a class="sourceLine" id="cb1-11" title="11">svc &lt;-<span class="st"> </span>AzureGraph<span class="op">::</span><span class="kw">get_graph_login</span>()<span class="op">$</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="st">    </span><span class="kw">get_service_principal</span>(<span class="st">&quot;app_id&quot;</span>)</a>
-<a class="sourceLine" id="cb1-13" title="13"></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="co"># give the service principal read-only access to vault keys and secrets</span></a>
-<a class="sourceLine" id="cb1-15" title="15">kv<span class="op">$</span><span class="kw">add_principal</span>(svc,</a>
-<a class="sourceLine" id="cb1-16" title="16">    <span class="dt">key_permissions=</span><span class="kw">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</a>
-<a class="sourceLine" id="cb1-17" title="17">    <span class="dt">secret_permissions=</span><span class="kw">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</a>
-<a class="sourceLine" id="cb1-18" title="18">    <span class="dt">certificate_permissions=</span><span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb1-19" title="19">    <span class="dt">storage_permissions=</span><span class="ot">NULL</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># create a key vault</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>rg &lt;-<span class="st"> </span>AzureRMR<span class="op">::</span><span class="kw">get_azure_login</span>()<span class="op">$</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="st">    </span><span class="kw">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="op">$</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="st">    </span><span class="kw">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>kv &lt;-<span class="st"> </span>rg<span class="op">$</span><span class="kw">create_key_vault</span>(<span class="st">&quot;mykeyvault&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># list current principals (by default includes logged-in user)</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>kv<span class="op">$</span><span class="kw">list_principals</span>()</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># get details for a service principal</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>svc &lt;-<span class="st"> </span>AzureGraph<span class="op">::</span><span class="kw">get_graph_login</span>()<span class="op">$</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="st">    </span><span class="kw">get_service_principal</span>(<span class="st">&quot;app_id&quot;</span>)</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co"># give the service principal read-only access to vault keys and secrets</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>kv<span class="op">$</span><span class="kw">add_principal</span>(svc,</span>
+<span id="cb1-16"><a href="#cb1-16"></a>    <span class="dt">key_permissions=</span><span class="kw">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</span>
+<span id="cb1-17"><a href="#cb1-17"></a>    <span class="dt">secret_permissions=</span><span class="kw">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</span>
+<span id="cb1-18"><a href="#cb1-18"></a>    <span class="dt">certificate_permissions=</span><span class="ot">NULL</span>,</span>
+<span id="cb1-19"><a href="#cb1-19"></a>    <span class="dt">storage_permissions=</span><span class="ot">NULL</span>)</span></code></pre></div>
 </div>
 <div id="client-interface" class="section level2">
 <h2>Client interface</h2>
 <p>The client interface is R6-based. To instantiate a new client object, call the <code>key_vault</code> function. This object includes sub-objects for interacting with keys, secrets, certificates and managed storage accounts.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">vault &lt;-<span class="st"> </span><span class="kw">key_vault</span>(<span class="st">&quot;https://mykeyvault.vault.azure.net&quot;</span>)</a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="co"># can also be done from the ARM resource object</span></a>
-<a class="sourceLine" id="cb2-4" title="4">vault &lt;-<span class="st"> </span>kv<span class="op">$</span><span class="kw">get_endpoint</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>vault &lt;-<span class="st"> </span><span class="kw">key_vault</span>(<span class="st">&quot;https://mykeyvault.vault.azure.net&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># can also be done from the ARM resource object</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>vault &lt;-<span class="st"> </span>kv<span class="op">$</span><span class="kw">get_endpoint</span>()</span></code></pre></div>
 <div id="keys" class="section level3">
 <h3>Keys</h3>
 <p>Key Vault supports RSA and elliptic curve (ECDSA) asymmetric encryption keys. The <code>keys</code> component of the client object provides methods for managing keys:</p>
@@ -365,35 +367,35 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>unwrap</code>: Unwrap a wrapped key. The inverse operation of <code>wrap</code>.</li>
 </ul>
 <p>The key object contains the public key component in the <code>key</code> field, as a parsed JSON web key. Note that Azure Key Vault does not provide access to the <em>private</em> key component.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># create a new RSA key with 4096-bit key size</span></a>
-<a class="sourceLine" id="cb3-2" title="2">vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newkey&quot;</span>, <span class="dt">type=</span><span class="st">&quot;RSA&quot;</span>, <span class="dt">rsa_key_size=</span><span class="dv">4096</span>)</a>
-<a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4">key &lt;-<span class="st"> </span>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;newkey&quot;</span>)</a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="co"># encrypting and decrypting</span></a>
-<a class="sourceLine" id="cb3-7" title="7">plaintext &lt;-<span class="st"> &quot;super secret&quot;</span></a>
-<a class="sourceLine" id="cb3-8" title="8">ciphertext &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">encrypt</span>(plaintext)</a>
-<a class="sourceLine" id="cb3-9" title="9">decrypted_text &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">decrypt</span>(ciphertext, <span class="dt">as_raw=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb3-10" title="10">plaintext <span class="op">==</span><span class="st"> </span>decrypted_text</a>
-<a class="sourceLine" id="cb3-11" title="11"><span class="co">#&gt; [1] TRUE</span></a>
-<a class="sourceLine" id="cb3-12" title="12"></a>
-<a class="sourceLine" id="cb3-13" title="13"><span class="co"># signing and verifying</span></a>
-<a class="sourceLine" id="cb3-14" title="14">dig &lt;-<span class="st"> </span>openssl<span class="op">::</span><span class="kw">sha256</span>(<span class="kw">charToRaw</span>(plaintext))</a>
-<a class="sourceLine" id="cb3-15" title="15">sig &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">sign</span>(dig)</a>
-<a class="sourceLine" id="cb3-16" title="16">key<span class="op">$</span><span class="kw">verify</span>(sig, dig)</a>
-<a class="sourceLine" id="cb3-17" title="17"><span class="co">#&gt; [1] TRUE</span></a>
-<a class="sourceLine" id="cb3-18" title="18"></a>
-<a class="sourceLine" id="cb3-19" title="19"><span class="co"># exporting the public key component, using the jose and openssl packages</span></a>
-<a class="sourceLine" id="cb3-20" title="20">pubkey &lt;-<span class="st"> </span>key<span class="op">$</span>key</a>
-<a class="sourceLine" id="cb3-21" title="21">openssl<span class="op">::</span><span class="kw">write_pem</span>(jose<span class="op">::</span><span class="kw">read_jwk</span>(pubkey), <span class="st">&quot;pubkey.pem&quot;</span>)</a>
-<a class="sourceLine" id="cb3-22" title="22"></a>
-<a class="sourceLine" id="cb3-23" title="23"><span class="co"># importing a key generated by openssl</span></a>
-<a class="sourceLine" id="cb3-24" title="24">sslkey &lt;-<span class="st"> </span>openssl<span class="op">::</span><span class="kw">rsa_keygen</span>()</a>
-<a class="sourceLine" id="cb3-25" title="25">vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;sslkey&quot;</span>, sslkey)</a>
-<a class="sourceLine" id="cb3-26" title="26"></a>
-<a class="sourceLine" id="cb3-27" title="27"><span class="co"># importing a key from a file</span></a>
-<a class="sourceLine" id="cb3-28" title="28">openssl<span class="op">::</span><span class="kw">write_pem</span>(sslkey, <span class="st">&quot;sslkey.pem&quot;</span>)</a>
-<a class="sourceLine" id="cb3-29" title="29">vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;sslkeyfromfile&quot;</span>, <span class="st">&quot;sslkey.pem&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># create a new RSA key with 4096-bit key size</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newkey&quot;</span>, <span class="dt">type=</span><span class="st">&quot;RSA&quot;</span>, <span class="dt">rsa_key_size=</span><span class="dv">4096</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a>key &lt;-<span class="st"> </span>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;newkey&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># encrypting and decrypting</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>plaintext &lt;-<span class="st"> &quot;super secret&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>ciphertext &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">encrypt</span>(plaintext)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>decrypted_text &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">decrypt</span>(ciphertext, <span class="dt">as_raw=</span><span class="ot">FALSE</span>)</span>
+<span id="cb3-10"><a href="#cb3-10"></a>plaintext <span class="op">==</span><span class="st"> </span>decrypted_text</span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co"># signing and verifying</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>dig &lt;-<span class="st"> </span>openssl<span class="op">::</span><span class="kw">sha256</span>(<span class="kw">charToRaw</span>(plaintext))</span>
+<span id="cb3-15"><a href="#cb3-15"></a>sig &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">sign</span>(dig)</span>
+<span id="cb3-16"><a href="#cb3-16"></a>key<span class="op">$</span><span class="kw">verify</span>(sig, dig)</span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="co"># exporting the public key component, using the jose and openssl packages</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>pubkey &lt;-<span class="st"> </span>key<span class="op">$</span>key</span>
+<span id="cb3-21"><a href="#cb3-21"></a>openssl<span class="op">::</span><span class="kw">write_pem</span>(jose<span class="op">::</span><span class="kw">read_jwk</span>(pubkey), <span class="st">&quot;pubkey.pem&quot;</span>)</span>
+<span id="cb3-22"><a href="#cb3-22"></a></span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="co"># importing a key generated by openssl</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>sslkey &lt;-<span class="st"> </span>openssl<span class="op">::</span><span class="kw">rsa_keygen</span>()</span>
+<span id="cb3-25"><a href="#cb3-25"></a>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;sslkey&quot;</span>, sslkey)</span>
+<span id="cb3-26"><a href="#cb3-26"></a></span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="co"># importing a key from a file</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a>openssl<span class="op">::</span><span class="kw">write_pem</span>(sslkey, <span class="st">&quot;sslkey.pem&quot;</span>)</span>
+<span id="cb3-29"><a href="#cb3-29"></a>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;sslkeyfromfile&quot;</span>, <span class="st">&quot;sslkey.pem&quot;</span>)</span></code></pre></div>
 </div>
 <div id="secrets" class="section level3">
 <h3>Secrets</h3>
@@ -413,11 +415,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>set_version</code>: Set the version of the secret to use. The default is to use the most recently created version.</li>
 </ul>
 <p>The secret itself is in the <code>value</code> field of the object, of class <code>secret_value</code>. This class has a <code>print</code> method that hides the value, to help guard against shoulder-surfing. Note that this will not stop a determined attacker; as a general rule, you should minimise assigning secrets or passing them around your R environment. If you want the raw string value itself, eg when passing it to <code>jsonlite::toJSON</code> or other functions which do not accept arbitrary object classes as inputs, use <code>unclass</code> to strip the class attribute first.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># create a new secret</span></a>
-<a class="sourceLine" id="cb4-2" title="2">vault<span class="op">$</span>secrets<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newsecret&quot;</span>, <span class="st">&quot;hidden text&quot;</span>)</a>
-<a class="sourceLine" id="cb4-3" title="3">secret &lt;-<span class="st"> </span>vault<span class="op">$</span>secrets<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;newsecret&quot;</span>)</a>
-<a class="sourceLine" id="cb4-4" title="4">secret<span class="op">$</span>value</a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; &lt;hidden&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># create a new secret</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>vault<span class="op">$</span>secrets<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newsecret&quot;</span>, <span class="st">&quot;hidden text&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>secret &lt;-<span class="st"> </span>vault<span class="op">$</span>secrets<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;newsecret&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>secret<span class="op">$</span>value</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; &lt;hidden&gt;</span></span></code></pre></div>
 </div>
 <div id="certificates" class="section level3">
 <h3>Certificates</h3>
@@ -449,31 +451,31 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>set_policy</code>: Sets the policy for a certificate, ie the authentication details.</li>
 <li><code>get_policy</code>: Retrieve the policy for a certificate.</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># create a new self-signed certificate (will also create an associated key and secret)</span></a>
-<a class="sourceLine" id="cb5-2" title="2">cert &lt;-<span class="st"> </span>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newcert&quot;</span>,</a>
-<a class="sourceLine" id="cb5-3" title="3">    <span class="dt">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</a>
-<a class="sourceLine" id="cb5-4" title="4">    <span class="dt">x509=</span><span class="kw">cert_x509_properties</span>(<span class="dt">dns_names=</span><span class="st">&quot;example.com&quot;</span>))</a>
-<a class="sourceLine" id="cb5-5" title="5"></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co"># import a certificate from a PFX file</span></a>
-<a class="sourceLine" id="cb5-7" title="7">vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;importedcert&quot;</span>, <span class="st">&quot;mycert.pfx&quot;</span>)</a>
-<a class="sourceLine" id="cb5-8" title="8"></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="co"># export the certificate as a PEM file</span></a>
-<a class="sourceLine" id="cb5-10" title="10">cert<span class="op">$</span><span class="kw">export</span>(<span class="st">&quot;newcert.pem&quot;</span>)</a>
-<a class="sourceLine" id="cb5-11" title="11"></a>
-<a class="sourceLine" id="cb5-12" title="12"><span class="co"># to export as a PFX file, set the &#39;format&#39; argument at cert creation</span></a>
-<a class="sourceLine" id="cb5-13" title="13">newcert2 &lt;-<span class="st"> </span>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newcert2&quot;</span>,</a>
-<a class="sourceLine" id="cb5-14" title="14">    <span class="dt">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</a>
-<a class="sourceLine" id="cb5-15" title="15">    <span class="dt">format=</span><span class="st">&quot;pfx&quot;</span>)</a>
-<a class="sourceLine" id="cb5-16" title="16">newcert2<span class="op">$</span><span class="kw">export</span>(<span class="st">&quot;newcert2.pfx&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># create a new self-signed certificate (will also create an associated key and secret)</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>cert &lt;-<span class="st"> </span>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newcert&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="dt">x509=</span><span class="kw">cert_x509_properties</span>(<span class="dt">dns_names=</span><span class="st">&quot;example.com&quot;</span>))</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># import a certificate from a PFX file</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;importedcert&quot;</span>, <span class="st">&quot;mycert.pfx&quot;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co"># export the certificate as a PEM file</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>cert<span class="op">$</span><span class="kw">export</span>(<span class="st">&quot;newcert.pem&quot;</span>)</span>
+<span id="cb5-11"><a href="#cb5-11"></a></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co"># to export as a PFX file, set the &#39;format&#39; argument at cert creation</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>newcert2 &lt;-<span class="st"> </span>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newcert2&quot;</span>,</span>
+<span id="cb5-14"><a href="#cb5-14"></a>    <span class="dt">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="dt">format=</span><span class="st">&quot;pfx&quot;</span>)</span>
+<span id="cb5-16"><a href="#cb5-16"></a>newcert2<span class="op">$</span><span class="kw">export</span>(<span class="st">&quot;newcert2.pfx&quot;</span>)</span></code></pre></div>
 <p>Note that exporting a certificate to a file should not be done unless absolutely necessary, as the point of using Key Vault is to avoid having to save sensitive data on a local machine.</p>
 <p>The AzureAuth package is able to make use of certificates stored in Key Vault to authenticate with Azure Active Directory. Here is some example code to do so. The app (client) in question needs to be setup with the certificate public key; we create the app via the AzureGraph package and pass it the key.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">## create a registered app in Azure Active Directory with cert credentials</span></a>
-<a class="sourceLine" id="cb6-2" title="2">gr &lt;-<span class="st"> </span>AzureGraph<span class="op">::</span><span class="kw">get_graph_login</span>()</a>
-<a class="sourceLine" id="cb6-3" title="3">certapp &lt;-<span class="st"> </span>gr<span class="op">$</span><span class="kw">create_app</span>(<span class="st">&quot;certapp&quot;</span>, <span class="dt">password=</span><span class="ot">FALSE</span>, <span class="dt">certificate=</span>cert<span class="op">$</span>cer)</a>
-<a class="sourceLine" id="cb6-4" title="4"></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co"># authenticate using data in Key Vault</span></a>
-<a class="sourceLine" id="cb6-6" title="6">AzureAuth<span class="op">::</span><span class="kw">get_azure_token</span>(<span class="st">&quot;resource_url&quot;</span>, <span class="st">&quot;mytenant&quot;</span>, certapp<span class="op">$</span>properties<span class="op">$</span>appId,</a>
-<a class="sourceLine" id="cb6-7" title="7">    <span class="dt">certificate=</span>cert)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## create a registered app in Azure Active Directory with cert credentials</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>gr &lt;-<span class="st"> </span>AzureGraph<span class="op">::</span><span class="kw">get_graph_login</span>()</span>
+<span id="cb6-3"><a href="#cb6-3"></a>certapp &lt;-<span class="st"> </span>gr<span class="op">$</span><span class="kw">create_app</span>(<span class="st">&quot;certapp&quot;</span>, <span class="dt">password=</span><span class="ot">FALSE</span>, <span class="dt">certificate=</span>cert<span class="op">$</span>cer)</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co"># authenticate using data in Key Vault</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>AzureAuth<span class="op">::</span><span class="kw">get_azure_token</span>(<span class="st">&quot;resource_url&quot;</span>, <span class="st">&quot;mytenant&quot;</span>, certapp<span class="op">$</span>properties<span class="op">$</span>appId,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="dt">certificate=</span>cert)</span></code></pre></div>
 </div>
 <div id="storage-accounts" class="section level3">
 <h3>Storage accounts</h3>
@@ -496,22 +498,22 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>list_sas_definitions</code>: List existing SAS definitions.</li>
 <li><code>show_sas</code>: Get a SAS from a definition.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># get the storage account details</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="kw">library</span>(AzureStor)</a>
-<a class="sourceLine" id="cb7-3" title="3">res &lt;-<span class="st"> </span>AzureRMR<span class="op">::</span><span class="kw">get_azure_login</span>()<span class="op">$</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="st">    </span><span class="kw">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="op">$</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="st">    </span><span class="kw">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)<span class="op">$</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="st">    </span><span class="kw">get_storage_account</span>(<span class="st">&quot;mystorageacct&quot;</span>)</a>
-<a class="sourceLine" id="cb7-7" title="7"></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co"># add a managed storage account</span></a>
-<a class="sourceLine" id="cb7-9" title="9">stor &lt;-<span class="st"> </span>vault<span class="op">$</span>storage<span class="op">$</span><span class="kw">add</span>(<span class="st">&quot;mystorage&quot;</span>, res, <span class="st">&quot;key1&quot;</span>)</a>
-<a class="sourceLine" id="cb7-10" title="10"></a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="co"># Creating a new SAS definition</span></a>
-<a class="sourceLine" id="cb7-12" title="12">today &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
-<a class="sourceLine" id="cb7-13" title="13">sasdef &lt;-<span class="st"> </span>res<span class="op">$</span><span class="kw">get_account_sas</span>(<span class="dt">expiry=</span>today <span class="op">+</span><span class="st"> </span><span class="dv">7</span><span class="op">*</span><span class="dv">24</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="dv">60</span>, <span class="dt">services=</span><span class="st">&quot;b&quot;</span>, <span class="dt">permissions=</span><span class="st">&quot;rw&quot;</span>)</a>
-<a class="sourceLine" id="cb7-14" title="14">stor<span class="op">$</span><span class="kw">create_sas_definition</span>(<span class="st">&quot;newsas&quot;</span>, sasdef, <span class="dt">validity_period=</span><span class="st">&quot;P15D&quot;</span>)</a>
-<a class="sourceLine" id="cb7-15" title="15"></a>
-<a class="sourceLine" id="cb7-16" title="16">stor<span class="op">$</span><span class="kw">show_sas</span>(<span class="st">&quot;newsas&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># get the storage account details</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">library</span>(AzureStor)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>res &lt;-<span class="st"> </span>AzureRMR<span class="op">::</span><span class="kw">get_azure_login</span>()<span class="op">$</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="st">    </span><span class="kw">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="op">$</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="st">    </span><span class="kw">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)<span class="op">$</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="st">    </span><span class="kw">get_storage_account</span>(<span class="st">&quot;mystorageacct&quot;</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co"># add a managed storage account</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>stor &lt;-<span class="st"> </span>vault<span class="op">$</span>storage<span class="op">$</span><span class="kw">add</span>(<span class="st">&quot;mystorage&quot;</span>, res, <span class="st">&quot;key1&quot;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co"># Creating a new SAS definition</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>today &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</span>
+<span id="cb7-13"><a href="#cb7-13"></a>sasdef &lt;-<span class="st"> </span>res<span class="op">$</span><span class="kw">get_account_sas</span>(<span class="dt">expiry=</span>today <span class="op">+</span><span class="st"> </span><span class="dv">7</span><span class="op">*</span><span class="dv">24</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="dv">60</span>, <span class="dt">services=</span><span class="st">&quot;b&quot;</span>, <span class="dt">permissions=</span><span class="st">&quot;rw&quot;</span>)</span>
+<span id="cb7-14"><a href="#cb7-14"></a>stor<span class="op">$</span><span class="kw">create_sas_definition</span>(<span class="st">&quot;newsas&quot;</span>, sasdef, <span class="dt">validity_period=</span><span class="st">&quot;P15D&quot;</span>)</span>
+<span id="cb7-15"><a href="#cb7-15"></a></span>
+<span id="cb7-16"><a href="#cb7-16"></a>stor<span class="op">$</span><span class="kw">show_sas</span>(<span class="st">&quot;newsas&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="see-also" class="section level2">
