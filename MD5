@@ -1,7 +1,7 @@
-1473c8d9e0f5632c46298df9673a3eca *DESCRIPTION
+06ffbbe8a5de06df49c10755a62511b4 *DESCRIPTION
 4dd4040e3beaa3462c568ce9d0620d9d *LICENSE
 3d64f7f836396489a30d0076047cd6cc *NAMESPACE
-d0208003d7fcf263eb9b1a1060ec8bd9 *NEWS.md
+9d023ba26258523379feec1b91d59c30 *NEWS.md
 a6c3a3b63f8ad816adeca8d8b2854811 *R/AzureKeyVault.R
 9e1ae6f0dacb1fb36e4986fd6188b0f7 *R/add_methods.R
 1764de8b4d19d01ad33ac3928cf0e93c *R/az_vault.R
@@ -17,10 +17,10 @@ e967ff99da5537d866153cfbb41b43d6 *R/stored_object.R
 ea6e5e7776ceba7a2689d815335ce1c8 *R/stored_secret.R
 47bad5d44fcd8662e20da693559c5868 *R/utils.R
 11e10d5452845c9ccca484cee8f719e9 *R/vault_endpoint.R
-d6f6affd0e90644727b51bbbfe5b79fc *README.md
-f1d7b7dec4a9c217ab934829cf8b2bcf *build/vignette.rds
-0fbfe791cac21746061067998f6a7fbe *inst/doc/intro.Rmd
-9737150af3bc93e16fcd915437ce2183 *inst/doc/intro.html
+6f6f7c7d1ca0746e6a19170a790d4779 *README.md
+9ba2bf2df81292a62cdd8eae752d2df9 *build/vignette.rds
+475eb0339bd9f00cc0715522626ebe3a *inst/doc/intro.Rmd
+0fd644c4c04cc821f641c5b3de4d52fa *inst/doc/intro.html
 3d36ff7c8e58563ef0584e578dc7b1eb *man/AzureKeyVault.Rd
 04b5495d4393c6964bc583a4f70b607d *man/az_key_vault.Rd
 06288a73230974bf63ae29eb412a6d24 *man/certificate.Rd
@@ -47,4 +47,4 @@ c4584f28e0d5c7a114bc040ecd75eca8 *tests/testthat/test03_secrets.R
 3abaed187f2c54ad14b7c544d792e45e *tests/testthat/test04_certs.R
 440daa1d2c9120fe2a618c0564ce8f71 *tests/testthat/test05_storage.R
 17c8f9bea948ea5c445f008e5a70ae18 *tests/testthat/test06_chartok.R
-0fbfe791cac21746061067998f6a7fbe *vignettes/intro.Rmd
+475eb0339bd9f00cc0715522626ebe3a *vignettes/intro.Rmd

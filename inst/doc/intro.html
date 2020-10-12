@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Hong Ooi" />
 
@@ -97,7 +97,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -118,9 +118,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -289,8 +286,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -300,7 +301,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Introduction to AzureKeyVault</h1>
-<h4 class="author"><em>Hong Ooi</em></h4>
+<h4 class="author">Hong Ooi</h4>
 
 
 
@@ -479,7 +480,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="storage-accounts" class="section level3">
 <h3>Storage accounts</h3>
-<p>Key Vault can be configured to manage access to an <a href="https://azure.microsoft.com/Services/Storage">Azure Storage Account</a>, by automatically regenerating access keys and saving commonly-used access patterns as shared access signature (SAS) templates. The <code>storage</code> component of the client object provides methods for working with managed accounts:</p>
+<p>Key Vault can be configured to manage access to an <a href="https://azure.microsoft.com/services/storage/">Azure Storage Account</a>, by automatically regenerating access keys and saving commonly-used access patterns as shared access signature (SAS) templates. The <code>storage</code> component of the client object provides methods for working with managed accounts:</p>
 <ul>
 <li><code>add</code>: Add a new storage account.</li>
 <li><code>get</code>: Retrieve an existing account.</li>
@@ -521,6 +522,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>For more information, see the official <a href="https://docs.microsoft.com/en-au/azure/key-vault/">Key Vault documentation</a>.</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
