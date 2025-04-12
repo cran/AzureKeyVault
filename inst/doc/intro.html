@@ -15,74 +15,103 @@
 
 <title>Introduction to AzureKeyVault</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -91,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -105,6 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -305,221 +342,311 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p><a href="https://azure.microsoft.com/services/key-vault/">Azure Key Vault</a> enables Microsoft Azure applications and users to store and use several types of secret/key data:</p>
+<p><a href="https://azure.microsoft.com/products/key-vault/">Azure Key
+Vault</a> enables Microsoft Azure applications and users to store and
+use several types of secret/key data:</p>
 <ul>
-<li>Cryptographic keys: Supports multiple key types and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys.</li>
-<li>Secrets: Provides secure storage of secrets, such as passwords and database connection strings.</li>
-<li>Certificates: Supports certificates, which are built on top of keys and secrets and add an automated renewal feature.</li>
-<li>Azure Storage: Can manage keys of an Azure Storage account for you. Internally, Key Vault can list (sync) keys with an Azure Storage Account, and regenerate (rotate) the keys periodically.</li>
+<li>Cryptographic keys: Supports multiple key types and algorithms, and
+enables the use of Hardware Security Modules (HSM) for high value
+keys.</li>
+<li>Secrets: Provides secure storage of secrets, such as passwords and
+database connection strings.</li>
+<li>Certificates: Supports certificates, which are built on top of keys
+and secrets and add an automated renewal feature.</li>
+<li>Azure Storage: Can manage keys of an Azure Storage account for you.
+Internally, Key Vault can list (sync) keys with an Azure Storage
+Account, and regenerate (rotate) the keys periodically.</li>
 </ul>
-<p>AzureKeyVault is an R package for working with the Key Vault service. It provides both a client interface, to access the contents of the vault, and a Resource Manager interface for administering the Key Vault itself.</p>
+<p>AzureKeyVault is an R package for working with the Key Vault service.
+It provides both a client interface, to access the contents of the
+vault, and a Resource Manager interface for administering the Key Vault
+itself.</p>
 <div id="resource-manager-interface" class="section level2">
 <h2>Resource Manager interface</h2>
-<p>AzureKeyVault extends the <a href="https://github.com/Azure/AzureRMR">AzureRMR</a> package to handle key vaults. In addition to creating and deleting vaults, it provides methods to manage access policies for user and service principals.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># create a key vault</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>rg &lt;-<span class="st"> </span>AzureRMR<span class="op">::</span><span class="kw">get_azure_login</span>()<span class="op">$</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="st">    </span><span class="kw">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="op">$</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="st">    </span><span class="kw">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>kv &lt;-<span class="st"> </span>rg<span class="op">$</span><span class="kw">create_key_vault</span>(<span class="st">&quot;mykeyvault&quot;</span>)</span>
-<span id="cb1-6"><a href="#cb1-6"></a></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># list current principals (by default includes logged-in user)</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>kv<span class="op">$</span><span class="kw">list_principals</span>()</span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># get details for a service principal</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>svc &lt;-<span class="st"> </span>AzureGraph<span class="op">::</span><span class="kw">get_graph_login</span>()<span class="op">$</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="st">    </span><span class="kw">get_service_principal</span>(<span class="st">&quot;app_id&quot;</span>)</span>
-<span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="co"># give the service principal read-only access to vault keys and secrets</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a>kv<span class="op">$</span><span class="kw">add_principal</span>(svc,</span>
-<span id="cb1-16"><a href="#cb1-16"></a>    <span class="dt">key_permissions=</span><span class="kw">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</span>
-<span id="cb1-17"><a href="#cb1-17"></a>    <span class="dt">secret_permissions=</span><span class="kw">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</span>
-<span id="cb1-18"><a href="#cb1-18"></a>    <span class="dt">certificate_permissions=</span><span class="ot">NULL</span>,</span>
-<span id="cb1-19"><a href="#cb1-19"></a>    <span class="dt">storage_permissions=</span><span class="ot">NULL</span>)</span></code></pre></div>
+<p>AzureKeyVault extends the <a href="https://github.com/Azure/AzureRMR">AzureRMR</a> package to handle
+key vaults. In addition to creating and deleting vaults, it provides
+methods to manage access policies for user and service principals.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># create a key vault</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>rg <span class="ot">&lt;-</span> AzureRMR<span class="sc">::</span><span class="fu">get_azure_login</span>()<span class="sc">$</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="sc">$</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="fu">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>kv <span class="ot">&lt;-</span> rg<span class="sc">$</span><span class="fu">create_key_vault</span>(<span class="st">&quot;mykeyvault&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># list current principals (by default includes logged-in user)</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>kv<span class="sc">$</span><span class="fu">list_principals</span>()</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co"># get details for a service principal</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>svc <span class="ot">&lt;-</span> AzureGraph<span class="sc">::</span><span class="fu">get_graph_login</span>()<span class="sc">$</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>    <span class="fu">get_service_principal</span>(<span class="st">&quot;app_id&quot;</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co"># give the service principal read-only access to vault keys and secrets</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>kv<span class="sc">$</span><span class="fu">add_principal</span>(svc,</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    <span class="at">key_permissions=</span><span class="fu">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>    <span class="at">secret_permissions=</span><span class="fu">c</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;list&quot;</span>, <span class="st">&quot;backup&quot;</span>),</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>    <span class="at">certificate_permissions=</span><span class="cn">NULL</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    <span class="at">storage_permissions=</span><span class="cn">NULL</span>)</span></code></pre></div>
 </div>
 <div id="client-interface" class="section level2">
 <h2>Client interface</h2>
-<p>The client interface is R6-based. To instantiate a new client object, call the <code>key_vault</code> function. This object includes sub-objects for interacting with keys, secrets, certificates and managed storage accounts.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>vault &lt;-<span class="st"> </span><span class="kw">key_vault</span>(<span class="st">&quot;https://mykeyvault.vault.azure.net&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># can also be done from the ARM resource object</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>vault &lt;-<span class="st"> </span>kv<span class="op">$</span><span class="kw">get_endpoint</span>()</span></code></pre></div>
+<p>The client interface is R6-based. To instantiate a new client object,
+call the <code>key_vault</code> function. This object includes
+sub-objects for interacting with keys, secrets, certificates and managed
+storage accounts.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>vault <span class="ot">&lt;-</span> <span class="fu">key_vault</span>(<span class="st">&quot;https://mykeyvault.vault.azure.net&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># can also be done from the ARM resource object</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>vault <span class="ot">&lt;-</span> kv<span class="sc">$</span><span class="fu">get_endpoint</span>()</span></code></pre></div>
 <div id="keys" class="section level3">
 <h3>Keys</h3>
-<p>Key Vault supports RSA and elliptic curve (ECDSA) asymmetric encryption keys. The <code>keys</code> component of the client object provides methods for managing keys:</p>
+<p>Key Vault supports RSA and elliptic curve (ECDSA) asymmetric
+encryption keys. The <code>keys</code> component of the client object
+provides methods for managing keys:</p>
 <ul>
-<li><code>create</code>: Create a new key, or a new version of an existing key.</li>
+<li><code>create</code>: Create a new key, or a new version of an
+existing key.</li>
 <li><code>import</code>: Import a key from a PEM file.</li>
 <li><code>get</code>: Retrieve an existing key.</li>
 <li><code>list</code>: List all keys in the vault.</li>
 <li><code>delete</code>: Delete a key.</li>
-<li><code>backup</code>: Return a base64-encoded blob representing the key.</li>
-<li><code>restore</code>: Use a blob obtained by the <code>backup</code> method to restore a key.</li>
-<li><code>do_operation</code>: Carry out arbitrary REST operations on keys. Used by the above methods.</li>
+<li><code>backup</code>: Return a base64-encoded blob representing the
+key.</li>
+<li><code>restore</code>: Use a blob obtained by the <code>backup</code>
+method to restore a key.</li>
+<li><code>do_operation</code>: Carry out arbitrary REST operations on
+keys. Used by the above methods.</li>
 </ul>
-<p>In turn, an individual key is represented by an object of class <code>stored_key</code>. This has the following methods:</p>
+<p>In turn, an individual key is represented by an object of class
+<code>stored_key</code>. This has the following methods:</p>
 <ul>
-<li><code>list_versions</code>: List the available versions for this key.</li>
-<li><code>set_version</code>: Set the version of the key to use. The default is to use the most recently created version.</li>
-<li><code>encrypt</code>: Encrypt a character string or raw vector, producing a base64-encoded ciphertext string.</li>
-<li><code>decrypt</code>: Decrypt a ciphertext string, producing either a character string or raw vector. The inverse operation of <code>encrypt</code>.</li>
+<li><code>list_versions</code>: List the available versions for this
+key.</li>
+<li><code>set_version</code>: Set the version of the key to use. The
+default is to use the most recently created version.</li>
+<li><code>encrypt</code>: Encrypt a character string or raw vector,
+producing a base64-encoded ciphertext string.</li>
+<li><code>decrypt</code>: Decrypt a ciphertext string, producing either
+a character string or raw vector. The inverse operation of
+<code>encrypt</code>.</li>
 <li><code>sign</code>: Sign a hashed digest.</li>
-<li><code>verify</code>: Verify the signature of a hash. The inverse operation of <code>sign</code>.</li>
-<li><code>wrap</code>: Wrap a symmetric key. This is technically the same as encrypting it, but is provided as a distinct operation to allow more granular management of permissions.</li>
-<li><code>unwrap</code>: Unwrap a wrapped key. The inverse operation of <code>wrap</code>.</li>
+<li><code>verify</code>: Verify the signature of a hash. The inverse
+operation of <code>sign</code>.</li>
+<li><code>wrap</code>: Wrap a symmetric key. This is technically the
+same as encrypting it, but is provided as a distinct operation to allow
+more granular management of permissions.</li>
+<li><code>unwrap</code>: Unwrap a wrapped key. The inverse operation of
+<code>wrap</code>.</li>
 </ul>
-<p>The key object contains the public key component in the <code>key</code> field, as a parsed JSON web key. Note that Azure Key Vault does not provide access to the <em>private</em> key component.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># create a new RSA key with 4096-bit key size</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newkey&quot;</span>, <span class="dt">type=</span><span class="st">&quot;RSA&quot;</span>, <span class="dt">rsa_key_size=</span><span class="dv">4096</span>)</span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a>key &lt;-<span class="st"> </span>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;newkey&quot;</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># encrypting and decrypting</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>plaintext &lt;-<span class="st"> &quot;super secret&quot;</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>ciphertext &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">encrypt</span>(plaintext)</span>
-<span id="cb3-9"><a href="#cb3-9"></a>decrypted_text &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">decrypt</span>(ciphertext, <span class="dt">as_raw=</span><span class="ot">FALSE</span>)</span>
-<span id="cb3-10"><a href="#cb3-10"></a>plaintext <span class="op">==</span><span class="st"> </span>decrypted_text</span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co"># signing and verifying</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a>dig &lt;-<span class="st"> </span>openssl<span class="op">::</span><span class="kw">sha256</span>(<span class="kw">charToRaw</span>(plaintext))</span>
-<span id="cb3-15"><a href="#cb3-15"></a>sig &lt;-<span class="st"> </span>key<span class="op">$</span><span class="kw">sign</span>(dig)</span>
-<span id="cb3-16"><a href="#cb3-16"></a>key<span class="op">$</span><span class="kw">verify</span>(sig, dig)</span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a></span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="co"># exporting the public key component, using the jose and openssl packages</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a>pubkey &lt;-<span class="st"> </span>key<span class="op">$</span>key</span>
-<span id="cb3-21"><a href="#cb3-21"></a>openssl<span class="op">::</span><span class="kw">write_pem</span>(jose<span class="op">::</span><span class="kw">read_jwk</span>(pubkey), <span class="st">&quot;pubkey.pem&quot;</span>)</span>
-<span id="cb3-22"><a href="#cb3-22"></a></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="co"># importing a key generated by openssl</span></span>
-<span id="cb3-24"><a href="#cb3-24"></a>sslkey &lt;-<span class="st"> </span>openssl<span class="op">::</span><span class="kw">rsa_keygen</span>()</span>
-<span id="cb3-25"><a href="#cb3-25"></a>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;sslkey&quot;</span>, sslkey)</span>
-<span id="cb3-26"><a href="#cb3-26"></a></span>
-<span id="cb3-27"><a href="#cb3-27"></a><span class="co"># importing a key from a file</span></span>
-<span id="cb3-28"><a href="#cb3-28"></a>openssl<span class="op">::</span><span class="kw">write_pem</span>(sslkey, <span class="st">&quot;sslkey.pem&quot;</span>)</span>
-<span id="cb3-29"><a href="#cb3-29"></a>vault<span class="op">$</span>keys<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;sslkeyfromfile&quot;</span>, <span class="st">&quot;sslkey.pem&quot;</span>)</span></code></pre></div>
+<p>The key object contains the public key component in the
+<code>key</code> field, as a parsed JSON web key. Note that Azure Key
+Vault does not provide access to the <em>private</em> key component.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># create a new RSA key with 4096-bit key size</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>vault<span class="sc">$</span>keys<span class="sc">$</span><span class="fu">create</span>(<span class="st">&quot;newkey&quot;</span>, <span class="at">type=</span><span class="st">&quot;RSA&quot;</span>, <span class="at">rsa_key_size=</span><span class="dv">4096</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>key <span class="ot">&lt;-</span> vault<span class="sc">$</span>keys<span class="sc">$</span><span class="fu">get</span>(<span class="st">&quot;newkey&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># encrypting and decrypting</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>plaintext <span class="ot">&lt;-</span> <span class="st">&quot;super secret&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>ciphertext <span class="ot">&lt;-</span> key<span class="sc">$</span><span class="fu">encrypt</span>(plaintext)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>decrypted_text <span class="ot">&lt;-</span> key<span class="sc">$</span><span class="fu">decrypt</span>(ciphertext, <span class="at">as_raw=</span><span class="cn">FALSE</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>plaintext <span class="sc">==</span> decrypted_text</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co"># signing and verifying</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>dig <span class="ot">&lt;-</span> openssl<span class="sc">::</span><span class="fu">sha256</span>(<span class="fu">charToRaw</span>(plaintext))</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>sig <span class="ot">&lt;-</span> key<span class="sc">$</span><span class="fu">sign</span>(dig)</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>key<span class="sc">$</span><span class="fu">verify</span>(sig, dig)</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co"># exporting the public key component, using the jose and openssl packages</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>pubkey <span class="ot">&lt;-</span> key<span class="sc">$</span>key</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>openssl<span class="sc">::</span><span class="fu">write_pem</span>(jose<span class="sc">::</span><span class="fu">read_jwk</span>(pubkey), <span class="st">&quot;pubkey.pem&quot;</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co"># importing a key generated by openssl</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>sslkey <span class="ot">&lt;-</span> openssl<span class="sc">::</span><span class="fu">rsa_keygen</span>()</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>vault<span class="sc">$</span>keys<span class="sc">$</span><span class="fu">import</span>(<span class="st">&quot;sslkey&quot;</span>, sslkey)</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co"># importing a key from a file</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>openssl<span class="sc">::</span><span class="fu">write_pem</span>(sslkey, <span class="st">&quot;sslkey.pem&quot;</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>vault<span class="sc">$</span>keys<span class="sc">$</span><span class="fu">import</span>(<span class="st">&quot;sslkeyfromfile&quot;</span>, <span class="st">&quot;sslkey.pem&quot;</span>)</span></code></pre></div>
 </div>
 <div id="secrets" class="section level3">
 <h3>Secrets</h3>
-<p>Key Vault allows you to store confidential information such as passwords, database connection strings, tokens, API keys, and so on. The <code>secrets</code> component of the client object provides methods for managing generic secrets:</p>
+<p>Key Vault allows you to store confidential information such as
+passwords, database connection strings, tokens, API keys, and so on. The
+<code>secrets</code> component of the client object provides methods for
+managing generic secrets:</p>
 <ul>
-<li><code>create</code>: Create a new secret, or a new version of an existing secret.</li>
+<li><code>create</code>: Create a new secret, or a new version of an
+existing secret.</li>
 <li><code>get</code>: Retrieve an existing secret.</li>
 <li><code>list</code>: List all secrets in the vault.</li>
 <li><code>delete</code>: Delete a secret.</li>
-<li><code>backup</code>: Return a base64-encoded blob representing the secret.</li>
-<li><code>restore</code>: Use a blob obtained by the <code>backup</code> method to restore a secret.</li>
-<li><code>do_operation</code>: Carry out arbitrary REST operations on secrets. Used by the above methods.</li>
+<li><code>backup</code>: Return a base64-encoded blob representing the
+secret.</li>
+<li><code>restore</code>: Use a blob obtained by the <code>backup</code>
+method to restore a secret.</li>
+<li><code>do_operation</code>: Carry out arbitrary REST operations on
+secrets. Used by the above methods.</li>
 </ul>
-<p>An individual secret is represented by an object of class <code>stored_secret</code>. Unlike a key, a secret is essentially just data, so the object does not provide any operations. It has the following methods for managing secret versions:</p>
+<p>An individual secret is represented by an object of class
+<code>stored_secret</code>. Unlike a key, a secret is essentially just
+data, so the object does not provide any operations. It has the
+following methods for managing secret versions:</p>
 <ul>
-<li><code>list_versions</code>: List the available versions for this secret.</li>
-<li><code>set_version</code>: Set the version of the secret to use. The default is to use the most recently created version.</li>
+<li><code>list_versions</code>: List the available versions for this
+secret.</li>
+<li><code>set_version</code>: Set the version of the secret to use. The
+default is to use the most recently created version.</li>
 </ul>
-<p>The secret itself is in the <code>value</code> field of the object, of class <code>secret_value</code>. This class has a <code>print</code> method that hides the value, to help guard against shoulder-surfing. Note that this will not stop a determined attacker; as a general rule, you should minimise assigning secrets or passing them around your R environment. If you want the raw string value itself, eg when passing it to <code>jsonlite::toJSON</code> or other functions which do not accept arbitrary object classes as inputs, use <code>unclass</code> to strip the class attribute first.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># create a new secret</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>vault<span class="op">$</span>secrets<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newsecret&quot;</span>, <span class="st">&quot;hidden text&quot;</span>)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>secret &lt;-<span class="st"> </span>vault<span class="op">$</span>secrets<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;newsecret&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>secret<span class="op">$</span>value</span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; &lt;hidden&gt;</span></span></code></pre></div>
+<p>The secret itself is in the <code>value</code> field of the object,
+of class <code>secret_value</code>. This class has a <code>print</code>
+method that hides the value, to help guard against shoulder-surfing.
+Note that this will not stop a determined attacker; as a general rule,
+you should minimise assigning secrets or passing them around your R
+environment. If you want the raw string value itself, eg when passing it
+to <code>jsonlite::toJSON</code> or other functions which do not accept
+arbitrary object classes as inputs, use <code>unclass</code> to strip
+the class attribute first.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># create a new secret</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>vault<span class="sc">$</span>secrets<span class="sc">$</span><span class="fu">create</span>(<span class="st">&quot;newsecret&quot;</span>, <span class="st">&quot;hidden text&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>secret <span class="ot">&lt;-</span> vault<span class="sc">$</span>secrets<span class="sc">$</span><span class="fu">get</span>(<span class="st">&quot;newsecret&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>secret<span class="sc">$</span>value</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; &lt;hidden&gt;</span></span></code></pre></div>
 </div>
 <div id="certificates" class="section level3">
 <h3>Certificates</h3>
-<p>The <code>certificates</code> component provides methods for working with SSL/TLS authentication certificates:</p>
+<p>The <code>certificates</code> component provides methods for working
+with SSL/TLS authentication certificates:</p>
 <ul>
-<li><code>create</code>: Create a new certificate, or a new version of an existing certificate. The default is to create a self-signed certificate.</li>
+<li><code>create</code>: Create a new certificate, or a new version of
+an existing certificate. The default is to create a self-signed
+certificate.</li>
 <li><code>import</code>: Import a certificate from a PFX file.</li>
 <li><code>get</code>: Retrieve an existing certificate.</li>
 <li><code>list</code>: List all certificates in the vault.</li>
 <li><code>delete</code>: Delete a certificate.</li>
-<li><code>backup</code>: Return a base64-encoded blob representing the certificate.</li>
-<li><code>restore</code>: Use a blob obtained by the <code>backup</code> method to restore a certificate.</li>
-<li><code>set_contacts</code>: Set the email address(es) to contact when a certificate is due for renewal.</li>
-<li><code>get_contacts</code>: Get the email address(es) of the contacts.</li>
-<li><code>add_issuer</code>: Adds the details for an issuer (certificate authority).</li>
+<li><code>backup</code>: Return a base64-encoded blob representing the
+certificate.</li>
+<li><code>restore</code>: Use a blob obtained by the <code>backup</code>
+method to restore a certificate.</li>
+<li><code>set_contacts</code>: Set the email address(es) to contact when
+a certificate is due for renewal.</li>
+<li><code>get_contacts</code>: Get the email address(es) of the
+contacts.</li>
+<li><code>add_issuer</code>: Adds the details for an issuer (certificate
+authority).</li>
 <li><code>get_issuer</code>: Retrieve the details for an issuer.</li>
 <li><code>remove_issuer</code>: Removes the details for an issuer.</li>
-<li><code>list_issuers</code>: Lists the issuers available to this vault.</li>
-<li><code>do_operation</code>: Carry out arbitrary REST operations on certificates. Used by the above methods.</li>
+<li><code>list_issuers</code>: Lists the issuers available to this
+vault.</li>
+<li><code>do_operation</code>: Carry out arbitrary REST operations on
+certificates. Used by the above methods.</li>
 </ul>
-<p>An individual certificate is represented by an object of class <code>stored_certificate</code>. This has the following methods:</p>
+<p>An individual certificate is represented by an object of class
+<code>stored_certificate</code>. This has the following methods:</p>
 <ul>
-<li><code>list_versions</code>: List the available versions for this certificate.</li>
-<li><code>set_version</code>: Set the version of the certificate to use. The default is to use the most recently created version.</li>
-<li><code>export</code>: Export the certificate as either a PEM or PFX file (the format is fixed at certificate creation).</li>
-<li><code>export_cer</code>: Export the certificate public key as a CER file.</li>
+<li><code>list_versions</code>: List the available versions for this
+certificate.</li>
+<li><code>set_version</code>: Set the version of the certificate to use.
+The default is to use the most recently created version.</li>
+<li><code>export</code>: Export the certificate as either a PEM or PFX
+file (the format is fixed at certificate creation).</li>
+<li><code>export_cer</code>: Export the certificate public key as a CER
+file.</li>
 <li><code>sign</code>: Sign a hashed digest.</li>
 <li><code>verify</code>: Verify a signature against a digest.</li>
-<li><code>set_policy</code>: Sets the policy for a certificate, ie the authentication details.</li>
+<li><code>set_policy</code>: Sets the policy for a certificate, ie the
+authentication details.</li>
 <li><code>get_policy</code>: Retrieve the policy for a certificate.</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># create a new self-signed certificate (will also create an associated key and secret)</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>cert &lt;-<span class="st"> </span>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newcert&quot;</span>,</span>
-<span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</span>
-<span id="cb5-4"><a href="#cb5-4"></a>    <span class="dt">x509=</span><span class="kw">cert_x509_properties</span>(<span class="dt">dns_names=</span><span class="st">&quot;example.com&quot;</span>))</span>
-<span id="cb5-5"><a href="#cb5-5"></a></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># import a certificate from a PFX file</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">import</span>(<span class="st">&quot;importedcert&quot;</span>, <span class="st">&quot;mycert.pfx&quot;</span>)</span>
-<span id="cb5-8"><a href="#cb5-8"></a></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co"># export the certificate as a PEM file</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>cert<span class="op">$</span><span class="kw">export</span>(<span class="st">&quot;newcert.pem&quot;</span>)</span>
-<span id="cb5-11"><a href="#cb5-11"></a></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co"># to export as a PFX file, set the &#39;format&#39; argument at cert creation</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>newcert2 &lt;-<span class="st"> </span>vault<span class="op">$</span>certificates<span class="op">$</span><span class="kw">create</span>(<span class="st">&quot;newcert2&quot;</span>,</span>
-<span id="cb5-14"><a href="#cb5-14"></a>    <span class="dt">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</span>
-<span id="cb5-15"><a href="#cb5-15"></a>    <span class="dt">format=</span><span class="st">&quot;pfx&quot;</span>)</span>
-<span id="cb5-16"><a href="#cb5-16"></a>newcert2<span class="op">$</span><span class="kw">export</span>(<span class="st">&quot;newcert2.pfx&quot;</span>)</span></code></pre></div>
-<p>Note that exporting a certificate to a file should not be done unless absolutely necessary, as the point of using Key Vault is to avoid having to save sensitive data on a local machine.</p>
-<p>The AzureAuth package is able to make use of certificates stored in Key Vault to authenticate with Azure Active Directory. Here is some example code to do so. The app (client) in question needs to be setup with the certificate public key; we create the app via the AzureGraph package and pass it the key.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## create a registered app in Azure Active Directory with cert credentials</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>gr &lt;-<span class="st"> </span>AzureGraph<span class="op">::</span><span class="kw">get_graph_login</span>()</span>
-<span id="cb6-3"><a href="#cb6-3"></a>certapp &lt;-<span class="st"> </span>gr<span class="op">$</span><span class="kw">create_app</span>(<span class="st">&quot;certapp&quot;</span>, <span class="dt">password=</span><span class="ot">FALSE</span>, <span class="dt">certificate=</span>cert<span class="op">$</span>cer)</span>
-<span id="cb6-4"><a href="#cb6-4"></a></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co"># authenticate using data in Key Vault</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>AzureAuth<span class="op">::</span><span class="kw">get_azure_token</span>(<span class="st">&quot;resource_url&quot;</span>, <span class="st">&quot;mytenant&quot;</span>, certapp<span class="op">$</span>properties<span class="op">$</span>appId,</span>
-<span id="cb6-7"><a href="#cb6-7"></a>    <span class="dt">certificate=</span>cert)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># create a new self-signed certificate (will also create an associated key and secret)</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>cert <span class="ot">&lt;-</span> vault<span class="sc">$</span>certificates<span class="sc">$</span><span class="fu">create</span>(<span class="st">&quot;newcert&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">x509=</span><span class="fu">cert_x509_properties</span>(<span class="at">dns_names=</span><span class="st">&quot;example.com&quot;</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co"># import a certificate from a PFX file</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>vault<span class="sc">$</span>certificates<span class="sc">$</span><span class="fu">import</span>(<span class="st">&quot;importedcert&quot;</span>, <span class="st">&quot;mycert.pfx&quot;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co"># export the certificate as a PEM file</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>cert<span class="sc">$</span><span class="fu">export</span>(<span class="st">&quot;newcert.pem&quot;</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co"># to export as a PFX file, set the &#39;format&#39; argument at cert creation</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>newcert2 <span class="ot">&lt;-</span> vault<span class="sc">$</span>certificates<span class="sc">$</span><span class="fu">create</span>(<span class="st">&quot;newcert2&quot;</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>    <span class="at">subject=</span><span class="st">&quot;CN=example.com&quot;</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>    <span class="at">format=</span><span class="st">&quot;pfx&quot;</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>newcert2<span class="sc">$</span><span class="fu">export</span>(<span class="st">&quot;newcert2.pfx&quot;</span>)</span></code></pre></div>
+<p>Note that exporting a certificate to a file should not be done unless
+absolutely necessary, as the point of using Key Vault is to avoid having
+to save sensitive data on a local machine.</p>
+<p>The AzureAuth package is able to make use of certificates stored in
+Key Vault to authenticate with Azure Active Directory. Here is some
+example code to do so. The app (client) in question needs to be setup
+with the certificate public key; we create the app via the AzureGraph
+package and pass it the key.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="do">## create a registered app in Azure Active Directory with cert credentials</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>gr <span class="ot">&lt;-</span> AzureGraph<span class="sc">::</span><span class="fu">get_graph_login</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>certapp <span class="ot">&lt;-</span> gr<span class="sc">$</span><span class="fu">create_app</span>(<span class="st">&quot;certapp&quot;</span>, <span class="at">password=</span><span class="cn">FALSE</span>, <span class="at">certificate=</span>cert<span class="sc">$</span>cer)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co"># authenticate using data in Key Vault</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>AzureAuth<span class="sc">::</span><span class="fu">get_azure_token</span>(<span class="st">&quot;resource_url&quot;</span>, <span class="st">&quot;mytenant&quot;</span>, certapp<span class="sc">$</span>properties<span class="sc">$</span>appId,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="at">certificate=</span>cert)</span></code></pre></div>
 </div>
 <div id="storage-accounts" class="section level3">
 <h3>Storage accounts</h3>
-<p>Key Vault can be configured to manage access to an <a href="https://azure.microsoft.com/services/storage/">Azure Storage Account</a>, by automatically regenerating access keys and saving commonly-used access patterns as shared access signature (SAS) templates. The <code>storage</code> component of the client object provides methods for working with managed accounts:</p>
+<p>Key Vault can be configured to manage access to an <a href="https://azure.microsoft.com/products/category/storage/">Azure
+Storage Account</a>, by automatically regenerating access keys and
+saving commonly-used access patterns as shared access signature (SAS)
+templates. The <code>storage</code> component of the client object
+provides methods for working with managed accounts:</p>
 <ul>
 <li><code>add</code>: Add a new storage account.</li>
 <li><code>get</code>: Retrieve an existing account.</li>
 <li><code>list</code>: List all storage accounts in the vault.</li>
 <li><code>remove</code>: Stop managing a storage account.</li>
-<li><code>backup</code>: Return a base64-encoded blob representing the storage account.</li>
-<li><code>restore</code>: Use a blob obtained by the <code>backup</code> method to restore an account.</li>
-<li><code>do_operation</code>: Carry out arbitrary REST operations on accounts. Used by the above methods.</li>
+<li><code>backup</code>: Return a base64-encoded blob representing the
+storage account.</li>
+<li><code>restore</code>: Use a blob obtained by the <code>backup</code>
+method to restore an account.</li>
+<li><code>do_operation</code>: Carry out arbitrary REST operations on
+accounts. Used by the above methods.</li>
 </ul>
-<p>An individual certificate is represented by an object of class <code>stored_account</code>, which has the following methods. Note that unlike the other types of objects, storage accounts are not versioned.</p>
+<p>An individual certificate is represented by an object of class
+<code>stored_account</code>, which has the following methods. Note that
+unlike the other types of objects, storage accounts are not
+versioned.</p>
 <ul>
 <li><code>regenerate_key</code>: Manually regenerate an access key.</li>
-<li><code>create_sas_definition</code>: Create a SAS definition, from which an actual SAS can be obtained.</li>
-<li><code>get_sas_definition</code>: Retrieve an existing SAS definition.</li>
+<li><code>create_sas_definition</code>: Create a SAS definition, from
+which an actual SAS can be obtained.</li>
+<li><code>get_sas_definition</code>: Retrieve an existing SAS
+definition.</li>
 <li><code>delete_sas_definition</code>: Delete a SAS definition.</li>
-<li><code>list_sas_definitions</code>: List existing SAS definitions.</li>
+<li><code>list_sas_definitions</code>: List existing SAS
+definitions.</li>
 <li><code>show_sas</code>: Get a SAS from a definition.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># get the storage account details</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">library</span>(AzureStor)</span>
-<span id="cb7-3"><a href="#cb7-3"></a>res &lt;-<span class="st"> </span>AzureRMR<span class="op">::</span><span class="kw">get_azure_login</span>()<span class="op">$</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="st">    </span><span class="kw">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="op">$</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="st">    </span><span class="kw">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)<span class="op">$</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="st">    </span><span class="kw">get_storage_account</span>(<span class="st">&quot;mystorageacct&quot;</span>)</span>
-<span id="cb7-7"><a href="#cb7-7"></a></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co"># add a managed storage account</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>stor &lt;-<span class="st"> </span>vault<span class="op">$</span>storage<span class="op">$</span><span class="kw">add</span>(<span class="st">&quot;mystorage&quot;</span>, res, <span class="st">&quot;key1&quot;</span>)</span>
-<span id="cb7-10"><a href="#cb7-10"></a></span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="co"># Creating a new SAS definition</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>today &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</span>
-<span id="cb7-13"><a href="#cb7-13"></a>sasdef &lt;-<span class="st"> </span>res<span class="op">$</span><span class="kw">get_account_sas</span>(<span class="dt">expiry=</span>today <span class="op">+</span><span class="st"> </span><span class="dv">7</span><span class="op">*</span><span class="dv">24</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="dv">60</span>, <span class="dt">services=</span><span class="st">&quot;b&quot;</span>, <span class="dt">permissions=</span><span class="st">&quot;rw&quot;</span>)</span>
-<span id="cb7-14"><a href="#cb7-14"></a>stor<span class="op">$</span><span class="kw">create_sas_definition</span>(<span class="st">&quot;newsas&quot;</span>, sasdef, <span class="dt">validity_period=</span><span class="st">&quot;P15D&quot;</span>)</span>
-<span id="cb7-15"><a href="#cb7-15"></a></span>
-<span id="cb7-16"><a href="#cb7-16"></a>stor<span class="op">$</span><span class="kw">show_sas</span>(<span class="st">&quot;newsas&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># get the storage account details</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">library</span>(AzureStor)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>res <span class="ot">&lt;-</span> AzureRMR<span class="sc">::</span><span class="fu">get_azure_login</span>()<span class="sc">$</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="fu">get_subscription</span>(<span class="st">&quot;sub_id&quot;</span>)<span class="sc">$</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="fu">get_resource_group</span>(<span class="st">&quot;rgname&quot;</span>)<span class="sc">$</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="fu">get_storage_account</span>(<span class="st">&quot;mystorageacct&quot;</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co"># add a managed storage account</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>stor <span class="ot">&lt;-</span> vault<span class="sc">$</span>storage<span class="sc">$</span><span class="fu">add</span>(<span class="st">&quot;mystorage&quot;</span>, res, <span class="st">&quot;key1&quot;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co"># Creating a new SAS definition</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>today <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>sasdef <span class="ot">&lt;-</span> res<span class="sc">$</span><span class="fu">get_account_sas</span>(<span class="at">expiry=</span>today <span class="sc">+</span> <span class="dv">7</span><span class="sc">*</span><span class="dv">24</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">60</span>, <span class="at">services=</span><span class="st">&quot;b&quot;</span>, <span class="at">permissions=</span><span class="st">&quot;rw&quot;</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>stor<span class="sc">$</span><span class="fu">create_sas_definition</span>(<span class="st">&quot;newsas&quot;</span>, sasdef, <span class="at">validity_period=</span><span class="st">&quot;P15D&quot;</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>stor<span class="sc">$</span><span class="fu">show_sas</span>(<span class="st">&quot;newsas&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="see-also" class="section level2">
 <h2>See also</h2>
-<p>For more information, see the official <a href="https://docs.microsoft.com/en-au/azure/key-vault/">Key Vault documentation</a>.</p>
+<p>For more information, see the official <a href="https://learn.microsoft.com/en-au/azure/key-vault/">Key Vault
+documentation</a>.</p>
 </div>
 
 
